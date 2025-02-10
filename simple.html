@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Romantic</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a0a;
+            min-height: 100vh;
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .fireworks-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .romantic-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #fff;
+            z-index: 1;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .romantic-message h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4em;
+            margin-bottom: 20px;
+            color: #ff69b4;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.7);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .romantic-message p {
+            font-size: 1.5em;
+            margin-bottom: 30px;
+            color: #fff;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+
+        .heart {
+            position: absolute;
+            animation: floatHeart 4s ease-in-out infinite;
+            color: #ff69b4;
+            font-size: 2em;
+            opacity: 0.7;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px rgba(255, 105, 180, 0.7);
+            }
+            to {
+                text-shadow: 0 0 20px rgba(255, 105, 180, 1);
+            }
+        }
+
+        @keyframes floatHeart {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+            }
+        }
+
+        .firework {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            animation: firework var(--duration) ease-in-out infinite;
+        }
+
+        .spark {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            animation: spark var(--duration) ease-in-out infinite;
+        }
+
+        @keyframes firework {
+            0% {
+                transform: translate(var(--x), 100vh);
+            }
+            50% {
+                transform: translate(var(--x), var(--y));
+            }
+            100% {
+                transform: translate(var(--x), var(--y));
+            }
+        }
+
+        @keyframes spark {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+                background: var(--color);
+            }
+            50% {
+                transform: scale(1);
+                opacity: 1;
+                background: var(--color);
+            }
+            100% {
+                transform: scale(30);
+                opacity: 0;
+                background: var(--color);
+            }
+        }
+
+        .stars {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle var(--twinkle-duration) ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.2;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="fireworks-container"></div>
+    <div class="romantic-message">
+        <h1>For you Humans are hard to guess</h1>
+        <p>To the person who makes every day feel like a fairytale, happy birthday. May our love story continue to unfold with each passing year."</p>
+        <div class="heart">❤️</div>
+    </div>
+
+    <script>
+        // Create stars background
+        function createStars() {
+            const starsContainer = document.querySelector('.stars');
+            for (let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.setProperty('--twinkle-duration', `${2 + Math.random() * 3}s`);
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Create firework function
+        function createFirework() {
+            const colors = [
+                '#ff69b4', '#ff1493', '#ff6b6b', '#4ecdc4', 
+                '#a8e6cf', '#ffd93d', '#ff9a9e', '#87ceeb'
+            ];
+            
+            const fireworksContainer = document.querySelector('.fireworks-container');
+            const firework = document.createElement('div');
+            const x = Math.random() * 100;
+            const y = 20 + Math.random() * 40;
+            const duration = 1 + Math.random() * 2;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+
+            firework.className = 'firework';
+            firework.style.setProperty('--x', `${x}vw`);
+            firework.style.setProperty('--y', `${y}vh`);
+            firework.style.setProperty('--duration', `${duration}s`);
+            firework.style.setProperty('--color', color);
+
+            const spark = document.createElement('div');
+            spark.className = 'spark';
+            firework.appendChild(spark);
+
+            fireworksContainer.appendChild(firework);
+
+            // Remove firework after animation
+            setTimeout(() => {
+                firework.remove();
+            }, duration * 1000);
+        }
+
+        // Create floating hearts
+        function createFloatingHeart() {
+            const message = document.querySelector('.romantic-message');
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.textContent = '❤️';
+            heart.style.left = `${Math.random() * 100}%`;
+            heart.style.setProperty('animation-delay', `${Math.random() * 2}s`);
+            message.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 4000);
+        }
+
+        // Initialize
+        createStars();
+        
+        // Launch fireworks periodically
+        setInterval(createFirework, 1000);
+        
+        // Create floating hearts periodically
+        setInterval(createFloatingHeart, 2000);
+    </script>
+</body>
+</html>
